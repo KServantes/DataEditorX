@@ -278,7 +278,15 @@ namespace DataEditorX.Core
                     {
                         StreamWriter sw = new StreamWriter(fs, new UTF8Encoding(false));
                         sw.WriteLine("--" + c.name);
-                        sw.WriteLine("function c"+id.ToString()+".initial_effect(c)");
+                        sw.WriteLine("local function ID()");
+			sw.WriteLine("	local str=string.match(debug.getinfo(2,'S')['source'],"c%d+%.lua")");
+			sw.WriteLine("	str=string.sub(str,1,string.len(str)-4)");
+			sw.WriteLine("	local cod=_G[str]");
+			sw.WriteLine("	local id=tonumber(string.sub(str,2))");
+			sw.WriteLine("	return id,cod");
+			sw.WriteLine("end");
+			sw.WriteLine("local id,cod=ID()");
+			sw.WriteLine("function cod.initial_effect(c)");
                         sw.WriteLine("\t");
                         sw.WriteLine("end");
                         sw.Close();
